@@ -10,10 +10,20 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // iOS 13 이후의 경우 대응
+        if #available(iOS 13.0, *) {
+            
+            return true
+        }
+        
+        // iOS 13 이전의 경우 대응
+        window = UIWindow()
+        window?.rootViewController = ViewController() // 초기 뷰컨트롤러(원하는 뷰 컨트롤러 생성후 교체)
+        window?.makeKeyAndVisible()
         return true
     }
 

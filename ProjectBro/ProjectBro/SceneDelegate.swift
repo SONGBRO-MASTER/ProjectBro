@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = ViewController() // 자신의 시작 ViewController
+        window.rootViewController = ViewController() // 초기 뷰컨트롤러(원하는 뷰 컨트롤러 생성후 교체)
         window.makeKeyAndVisible()
         self.window = window
     }
