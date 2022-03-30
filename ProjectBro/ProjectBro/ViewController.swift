@@ -7,6 +7,7 @@
 
 import UIKit
 
+/* MARK: MainViewController */
 class ViewController: UIViewController {
     
     // MARK: - Property
@@ -15,7 +16,7 @@ class ViewController: UIViewController {
         
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell") // 테이블 뷰 셀 등록
+        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: "cell") // 테이블 뷰 셀 등록
         
         return tableView
     }()
@@ -44,9 +45,9 @@ class ViewController: UIViewController {
     
     private func setUp() { // 뷰 설정
         
-        setDelegate()
+        setDelegate() // 위임자(대리자) 설정
         addSubViews()
-        setAutoLayout()
+        setAutoLayout() // 오토레이아웃 설정
     }
     
     // MARK: - SetUp
@@ -92,14 +93,102 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = mainTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
+        let cell = mainTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MainTableViewCell
         
-        cell.textLabel?.text = arr[indexPath.row]
+//        cell.textLabel?.text = arr[indexPath.row]
         
         return cell
     }
     
     /* UITableViewDelegate */
+}
+
+/* MARK: - MainTableViewCell */
+class MainTableViewCell: UITableViewCell {
+    
+    // MARK: - Property
+    /* 뷰 구성 */
+    private let nameLabel: UILabel = { // 프로젝트 이름
+       
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Project1"
+        label.backgroundColor = .yellow
+        
+        return label
+    }()
+    
+    private let dDayLabel: UILabel = { // D-day
+       
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "D-100"
+        label.backgroundColor = .green
+        
+        return label
+    }()
+    
+    lazy var progressView: UIProgressView = { // 프로그레스 바
+       
+        let progressview = UIProgressView()
+        progressview.translatesAutoresizingMaskIntoConstraints = false
+        progressview.trackTintColor = .orange
+        progressview.progressTintColor = .red
+        progressview.progress = 0.1
+        
+        return progressview
+    }()
+    
+    // MARK: - init
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setUp() // 뷰 설정
+    }
+
+    required init?(coder: NSCoder) {
+
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUp() { // 뷰 설정
+        
+        addContentViews()
+        setAutoLayout() // 오토레이아웃 설정
+    }
+    
+    // MARK: - SetUp
+    private func addContentViews() {
+        
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(dDayLabel)
+        contentView.addSubview(progressView)
+    }
+    
+    private func setAutoLayout() { // 오토레이아웃 설정
+        
+        NSLayoutConstraint.activate([
+        
+            /* nameLabel 설정(오토레이아웃) */
+            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            nameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            nameLabel.widthAnchor.constraint(equalToConstant: 150),
+            
+            /* dDayLabel 설정(오토레이아웃) */
+            dDayLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            dDayLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            dDayLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            dDayLabel.widthAnchor.constraint(equalToConstant: 50),
+            
+            /* progressView 설정(오토레이아웃) */
+            progressView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            progressView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            progressView.heightAnchor.constraint(equalToConstant: 10)
+        ])
+    }
 }
 
 /* MARK: - SwiftUI Preview */
