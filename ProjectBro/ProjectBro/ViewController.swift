@@ -7,13 +7,15 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController {
     
+    // MARK: - Property
     /* 뷰 구성 */
     private let mainTableView: UITableView = { // 메인 테이블 뷰
         
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell") // 테이블 뷰 셀 등록
         
         return tableView
     }()
@@ -29,6 +31,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     private let arr = ["1", "2", "3", "4", "5"] // 임시 데이터
 
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -36,26 +39,52 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print("viewDidLoad!")
         view.backgroundColor = .yellow
         
-        /* mainTableView 설정(오토레이아웃) */
-        view.addSubview(mainTableView)
-        mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        mainTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mainTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mainTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        setUp() // 뷰 설정
+    }
+    
+    private func setUp() { // 뷰 설정
         
-        mainTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell") // 테이블 뷰 셀 등록
+        setDelegate()
+        addSubViews()
+        setAutoLayout()
+    }
+    
+    // MARK: - SetUp
+    private func setDelegate() { // 위임자(대리자) 설정
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        
-        /* plusBtn 설정(오토레이아웃) */
-        view.addSubview(plusBtn)
-        plusBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        plusBtn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
-        plusBtn.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        plusBtn.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
+    private func addSubViews() {
+        
+        view.addSubview(mainTableView)
+        view.addSubview(plusBtn)
+    }
+    
+    private func setAutoLayout() { // 오토레이아웃 설정
+        
+        NSLayoutConstraint.activate([
+        
+            /* mainTableView 설정(오토레이아웃) */
+            mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            mainTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            mainTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            /* plusBtn 설정(오토레이아웃) */
+            plusBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            plusBtn.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
+            plusBtn.widthAnchor.constraint(equalToConstant: 50),
+            plusBtn.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+}
+
+/* MARK: - Delegate */
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    /* UITableViewDataSource */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return arr.count
@@ -69,6 +98,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         return cell
     }
+    
+    /* UITableViewDelegate */
 }
 
 /* MARK: - SwiftUI Preview */
